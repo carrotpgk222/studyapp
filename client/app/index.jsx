@@ -22,7 +22,10 @@ export default function HomeScreen() {
       <Text style={styles.slogan}>Deeply Seeking Knowledge, One Step at a Time</Text>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => router.push("/login")} // Navigate to login screen
+        >
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
         <TouchableOpacity 
@@ -97,5 +100,5 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "bold",
-  },
+  },
 });
