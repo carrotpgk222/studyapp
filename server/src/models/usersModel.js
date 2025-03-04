@@ -1,16 +1,16 @@
 // ##############################################################
 // REQUIRE MODULES
 // ##############################################################
-const pool = require('../services/db');
+const { pool } = require('../services/db');
 
 // ##############################################################
 // DEFINE INSERT NEW users
 // ##############################################################
-module.exports.insertuser = (data, callback) =>
+module.exports.insertUser = (data, callback) =>
     {
         const SQLSTATMENT = `
-        INSERT INTO users (username, email,password,skillpoints, created_on)
-        VALUES (?, ?, ?,0, NOW())
+        INSERT INTO users (username, email,password)
+        VALUES (?, ?,?)
         `;
     const VALUES = [data.username, data.email, data.password];
     
@@ -45,10 +45,10 @@ module.exports.selectAllUsers = (callback) => {
 module.exports.updateById = (data, callback) => {
     const SQL_UPDATE = `
         UPDATE users 
-        SET username = ?, skillpoints = ?
+        SET username = ?
         WHERE user_id = ?;
     `;
-    const VALUES = [data.username, data.skillpoints, data.user_id];
+    const VALUES = [data.username, data.user_id];
 
     // perform the update user by userid
     pool.query(SQL_UPDATE, VALUES,callback)
