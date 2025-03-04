@@ -235,6 +235,7 @@ module.exports.checkUsernameOrEmailExist = (req, res, next) =>
             email: req.body.email
         }
         const callback = (error, results, fields) => {
+            
             if (error) {
                 console.error("Error checkUsernameOrEmailExist:", error);
                 res.status(500).json(error);

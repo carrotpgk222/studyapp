@@ -1,4 +1,4 @@
-const pool = require('../services/db.js');
+const { pool } = require('../services/db');
 
 module.exports.selectAll = (callback) =>
     {
