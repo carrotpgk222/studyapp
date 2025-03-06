@@ -39,7 +39,7 @@ db.serialize(() => {
       name TEXT NOT NULL UNIQUE,
       description TEXT
     );
-
+    
     CREATE TABLE User_Subjects (
       user_id INTEGER NOT NULL,
       subject_id INTEGER NOT NULL,
