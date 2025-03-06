@@ -6,16 +6,20 @@ const { pool } = require('../services/db');
 // ##############################################################
 // DEFINE INSERT NEW users
 // ##############################################################
-module.exports.insertUser = (data, callback) =>
-    {
-        const SQLSTATMENT = `
-        INSERT INTO users (username, email,password)
-        VALUES (?, ?,?)
-        `;
+module.exports.insertUser = (data, callback) => {
+    const SQLSTATEMENT = `
+        INSERT INTO users (username, email, password)
+        VALUES (?, ?, ?)
+    `;
     const VALUES = [data.username, data.email, data.password];
-    
-    pool.query(SQLSTATMENT, VALUES, callback);   
-    }
+
+    pool.query(SQLSTATEMENT, VALUES, function (err, result) {
+        if (err) return callback(err, null);
+        
+        // Now result.lastID will contain the inserted user's ID
+        callback(null, { user_id: result.lastID });
+    });
+};
 // ##############################################################
 // DEFINE MODEL FOR SELECT USER BY USERNAME
 // ##############################################################
@@ -37,7 +41,8 @@ module.exports.selectAllUsers = (callback) => {
         SELECT *
         FROM users;
     `;
-    pool.query(SQLSTATEMENT, callback)
+    const VALUES = [];
+    pool.query(SQLSTATEMENT,VALUES, callback)
 }
 // ##############################################################
 // DEFINE MODEL FOR UPDATING USER BY ID
