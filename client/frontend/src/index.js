@@ -1,8 +1,10 @@
+/* This code is the default entry point for a React application */
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import Choose from './choose';
-import reportWebVitals from './reportWebVitals';
+import './core/index.css';
+import Choose from './pages/choose/choose';
+import reportWebVitals from './core/reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
