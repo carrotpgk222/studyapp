@@ -3,13 +3,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './core/index.css';
-import Main from './pages/main/main';
+import Profile from './pages/profile/profile';
 import reportWebVitals from './core/reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Main />
+    <Profile />
   </React.StrictMode>
 );
 
