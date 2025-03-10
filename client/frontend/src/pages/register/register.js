@@ -18,8 +18,36 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission logic here (e.g., API call)
-        console.log('Form Data Submitted:', formData);
+
+        // Make a POST request to /register (adjust the URL/port as needed)
+        fetch('http://localhost:3000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // The server expects fields named "username", "email", and "password"
+            // If your server is expecting "name" instead of "username", adjust accordingly
+            body: JSON.stringify({
+                username: formData.name,
+                email: formData.email,
+                password: formData.password
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                // Handle HTTP errors
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle success - for example, show a success message or redirect
+            console.log('Registration successful:', data);
+        })
+        .catch(error => {
+            // Handle any errors (network, server, etc.)
+            console.error('Registration error:', error);
+        });
     };
 
     return (
