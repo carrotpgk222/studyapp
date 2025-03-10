@@ -16,6 +16,7 @@ db.serialize(() => {
     DROP TABLE IF EXISTS user_subjects;
     DROP TABLE IF EXISTS subjects;
     DROP TABLE IF EXISTS users;
+    DROP TABLE IF EXISTS reviews;
   `, (err) => {
     if (err) {
       console.error('Error dropping tables:', err.message);
@@ -75,6 +76,16 @@ db.serialize(() => {
     INSERT INTO Subjects (name, description) VALUES ('Combined Science (Physics)', 'Physics topics in combined science');
     INSERT INTO Subjects (name, description) VALUES ('Combined Science (Chem)', 'Chemistry topics in combined science');
     INSERT INTO Subjects (name, description) VALUES ('Combined Science (Bio)', 'Biology topics in combined science');
+
+    CREATE TABLE Reviews (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      review_amt INTEGER NOT NULL,
+      user_id INTEGER NOT NULL,
+      scheduleSatisfaction INTEGER NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      optional_notes TEXT,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
   `;
 
   db.exec(sql, (err) => {

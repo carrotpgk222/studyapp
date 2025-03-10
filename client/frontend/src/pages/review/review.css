@@ -89,22 +89,22 @@ h1 {
 
 /* Emoji Hover and Selection Highlight */
 .emoji {
-    transition: transform 0.2s ease, filter 0.2s ease, background-color 0.2s ease; /* Added transition for background-color */
-    border: 3px solid transparent; /* Initial transparent border */
-    border-radius: 8px; /* Square with rounded edges */
+    transition: transform 0.2s ease, filter 0.2s ease, background-color 0.2s ease;
+    border: 3px solid transparent;
+    border-radius: 8px;
     padding: 10px;
     position: relative;
 }
 
 .emoji:hover {
-    transform: scale(1.3); /* Increase scale on hover */
-    background-color: rgba(0, 123, 255, 0.2); /* Light blue background on hover */
+    transform: scale(1.3);
+    background-color: rgba(0, 123, 255, 0.2);
 }
 
 .emoji.selected {
-    filter: brightness(1.3); /* Apply a highlight effect on selected emoji */
-    background-color: rgba(0, 123, 255, 0.6); /* Filled-in blue highlight */
-    color: white; /* Optional: Adjust color of the emoji when selected */
+    filter: brightness(1.3);
+    background-color: rgba(0, 123, 255, 0.6);
+    color: white;
 }
 
 /* Feedback Text Area */
@@ -125,6 +125,68 @@ textarea:focus {
     border-color: #3b97b9;
     outline: none;
     background-color: #fff;
+}
+
+/* Satisfaction Rating Section */
+.rating-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.satisfaction-buttons {
+    display: flex;
+    justify-content: space-between; /* Distribute items evenly */
+    gap: 10px; /* Add a small gap between items */
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.rating-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    justify-content: flex-end; /* Align buttons at the bottom */
+    flex: 1; /* Allow each item to take up equal space */
+    height: 80px; /* Fixed height for all items */
+}
+
+.rating-label-above {
+    font-size: 14px;
+    font-weight: bold;
+    color: #4d5b6c;
+    margin-bottom: 5px; /* Space between label and button */
+    white-space: nowrap; /* Prevent wrapping of label text */
+}
+
+.rating-label-above.empty-label {
+    visibility: hidden; /* Hide the placeholder label */
+}
+
+.rating-btn {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 40px; /* Fixed width for buttons */
+    height: 40px; /* Fixed height for buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rating-btn:hover {
+    background-color: #3b97b9;
+    color: white;
+    transform: scale(1.1);
+}
+
+.rating-btn.selected {
+    background-color: #3b97b9;
+    color: white;
 }
 
 /* Submit Button */

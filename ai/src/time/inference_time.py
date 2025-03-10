@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from ai.src.time.train_time import (
+from train_time import (
     StudyDurationPredictor,
     map_class_to_duration,
     map_break_frequency_to_minutes,
