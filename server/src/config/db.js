@@ -79,11 +79,12 @@ db.serialize(() => {
 
     CREATE TABLE Reviews (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      review_amt INTEGER NOT NULL,
+      rating INTEGER NOT NULL,
       user_id INTEGER NOT NULL,
       scheduleSatisfaction INTEGER NOT NULL,
+      sessionDuration INTEGER NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      optional_notes TEXT,
+      feedback TEXT,
       FOREIGN KEY (user_id) REFERENCES users(id)
     );
   `;

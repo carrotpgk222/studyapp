@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from sklearn.preprocessing import StandardScaler
+import pickle  # <-- for saving the scaler
 
 #####################################
 # 1) MAPPING FUNCTIONS
@@ -71,7 +72,7 @@ class StudyDurationPredictor(nn.Module):
 #####################################
 
 def load_and_preprocess_data():
-    df = pd.read_csv("C:/Users/bryan/studyapp/ai/src/train/time_data_modified.csv")
+    df = pd.read_csv("C:/Users/bryan/studyapp/ai/src/time/time_data_modified.csv")
 
     required_cols = [
         "Typical Study Session Duration",
@@ -138,8 +139,15 @@ def main():
 
     print("Training model...")
     train_model(model, optimizer, X_tensor, y_tensor, epochs=500)
+
+    # Save the model weights
     torch.save(model.state_dict(), "study_duration_model.pth")
-    print("Training complete. Model saved.")
+
+    # Save the scaler to a pickle file
+    with open("scaler.pkl", "wb") as f:
+        pickle.dump(scaler, f)
+
+    print("Training complete. Model and scaler saved.")
 
 if __name__ == '__main__':
     main()

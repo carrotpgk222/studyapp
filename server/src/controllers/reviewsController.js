@@ -2,31 +2,18 @@
 const reviewsModel = require('../models/reviewsModel');
 const axios = require('axios');
 
-/**
- * Convert a numeric duration (e.g. 45) into the strings your AI expects:
- *  - <30 -> "Less than 30 minutes"
- *  - <60 -> "30-60 minutes"
- *  - <120 -> "1-2 hours"
- *  - >=120 -> "More than 2 hours"
+/** 
+ * 1) Create Review in DB (no AI call)
  */
-function mapMinutesToStr(duration) {
-  if (duration < 30) return 'Less than 30 minutes';
-  if (duration < 60) return '30-60 minutes';
-  if (duration < 120) return '1-2 hours';
-  return 'More than 2 hours';
-}
-
 module.exports.createReview = (req, res) => {
-  // Extract data from the request body
   const data = {
-    sessionDuration: req.body.sessionDuration,       // e.g., 45
-    rating: req.body.rating,                         // e.g., 1..5 for emojis
-    feedback: req.body.feedback || '',               // optional text
-    user_id: req.body.user_id,                       // user ID from the client
-    scheduleSatisfaction: req.body.scheduleSatisfaction // e.g., 1..5 for AI satisfaction
+    sessionDuration: req.body.sessionDuration,
+    rating: req.body.rating,
+    feedback: req.body.feedback || '',
+    user_id: req.body.user_id,
+    scheduleSatisfaction: req.body.scheduleSatisfaction
   };
 
-  // Validate required fields
   if (
     data.sessionDuration == null ||
     data.rating == null ||
@@ -36,42 +23,81 @@ module.exports.createReview = (req, res) => {
     return res.status(400).json({ error: 'Missing required fields.' });
   }
 
-  // 1) Insert the review into your DB via the model
-  reviewsModel.insertReview(data, function(err, dbResult) {
+  reviewsModel.insertReview(data, (err, dbResult) => {
     if (err) {
       console.error('Error inserting review:', err);
       return res.status(500).json({ error: 'Internal server error' });
     }
 
-    // 2) After inserting the review, call the Flask /predict endpoint
-    //    Convert the numeric duration into a string your AI model expects
-    const durationStr = mapMinutesToStr(data.sessionDuration);
-
-    axios.post('http://localhost:3000/predict', {
-      // typical_study_str is used by your AI to encode study intensity
-      typical_study_str: durationStr,
-
-      // Hard-coded break_freq_str, or you could let the user choose
-      break_freq_str: 'Sometimes',
-
-      // schedule_sat is also used by your AI
-      schedule_sat: data.scheduleSatisfaction
-    })
-    .then(flaskResponse => {
-      // 3) Return both the DB result and the AI prediction to the client
-      return res.status(201).json({
-        message: 'Review created successfully',
-        dbData: dbResult,                // e.g., { review_id: 123 }
-        aiPrediction: flaskResponse.data // e.g., { predicted_class, predicted_label, ... }
-      });
-    })
-    .catch(aiError => {
-      console.error('Error calling AI:', aiError);
-      // We still return 201 for the DB insertion but note the AI call failed
-      return res.status(201).json({
-        message: 'Review created successfully (AI call failed)',
-        dbData: dbResult
-      });
+    // Return a success response with the DB result
+    return res.status(201).json({
+      message: 'Review created successfully',
+      dbData: dbResult
     });
   });
 };
+
+/**
+ * 2) Separate Endpoint to Call AI
+ * 
+ * Expects request body with:
+ *  - sessionDuration (number)
+ *  - breakTime (number)
+ *  - scheduleSatisfaction (number)
+ */
+module.exports.callAI = (req, res) => {
+  const { sessionDuration, breakTime, scheduleSatisfaction } = req.body;
+
+  // Validate input
+  if (sessionDuration == null || breakTime == null || scheduleSatisfaction == null) {
+    return res.status(400).json({ error: 'Missing required fields for AI call.' });
+  }
+
+  // Debug: log data being sent to AI
+  console.log('Sending to AI:', {
+    study_time: sessionDuration,
+    break_time: breakTime,
+    schedule_satisfaction: scheduleSatisfaction
+  });
+
+  // Call Flask /predict
+  axios.post('http://127.0.0.1:5000/predict', {
+    study_time: sessionDuration,
+    break_time: breakTime,
+    schedule_satisfaction: scheduleSatisfaction
+  })
+    .then(flaskResponse => {
+      // Return AI prediction to client
+      return res.status(200).json({
+        message: 'AI prediction successful',
+        aiPrediction: flaskResponse.data
+      });
+    })
+    .catch(aiError => {
+      console.error('Error calling AI:', aiError.message);
+      if (aiError.response) {
+        console.error('AI response status:', aiError.response.status);
+        console.error('AI response data:', aiError.response.data);
+      } else {
+        console.error('No response received from AI');
+      }
+
+      return res.status(500).json({
+        error: 'Failed to call AI',
+        details: aiError.message
+      });
+    });
+};
+
+
+module.exports.getAllReviews = (req, res, next) =>{
+  const callback = (error, results, fields) => {
+      if (error) {
+          console.error("Error getAllReviews:", error);
+          res.status(500).json(error);
+      } 
+      else res.status(200).json(results);
+  }
+
+  reviewsModel.selectAllReviews(callback);
+}
