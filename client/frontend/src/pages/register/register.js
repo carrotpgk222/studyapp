@@ -64,7 +64,7 @@ const Register = () => {
   return (
     <div className="register-container">
         <div className="logo">
-            <img src="https://i.imgur.com/FLXaWSm.png" alt="Logo" />
+            <img src="https://i.imgur.com/FLXaWS.png" alt="Logo" />
         </div>
         <div className="container">
             <div className="register-form">

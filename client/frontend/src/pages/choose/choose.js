@@ -1,16 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";  // Import useNavigate from react-router-dom
 import "./choose.css"; // Make sure to create and import your CSS file
 
 const Choose = () => {
-  // Placeholder functions for navigation (Update when backend is ready)
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  // Navigate to "/login"
   const handleLogin = () => {
-    console.log("Login button clicked");
-    // TODO: Implement navigation or authentication logic here
+    navigate("/login");
   };
 
+  // Navigate to "/register"
   const handleSignup = () => {
-    console.log("Sign up button clicked");
-    // TODO: Implement navigation or authentication logic here
+    navigate("/register");
   };
 
   return (
@@ -22,18 +24,22 @@ const Choose = () => {
         <span className="highlight">Unlock</span> Your <span className="highlight">Potential</span>
       </h1>
 
-      <p className="descriptionOne">Manage your time, improve your education, and get responsive feedback.</p>
-      <p className="descriptionTwo">Customize your learning journey today!</p>
+      <p className="descriptionOne">
+        Manage your time, improve your education, and get responsive feedback.
+      </p>
+      <p className="descriptionTwo">
+        Customize your learning journey today!
+      </p>
 
       <p className="slogan">Deeply Seeking Knowledge, One Step at a Time</p>
 
       <div className="button-container">
-        {/* Login Button: Update `onClick` when backend is ready */}
+        {/* Login Button */}
         <button className="login-button" onClick={handleLogin} id="login-btn">
           Log in
         </button>
         
-        {/* Sign Up Button: Update `onClick` when backend is ready */}
+        {/* Sign Up Button */}
         <button className="signup-button" onClick={handleSignup} id="signup-btn">
           Sign up
         </button>
@@ -43,4 +49,3 @@ const Choose = () => {
 };
 
 export default Choose;
-
