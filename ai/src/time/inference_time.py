@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 from flask import Flask, request, jsonify
 
+# Import your model and mapping function from train_time
 from train_time import StudyDurationPredictor, map_class_to_duration
 
 app = Flask(__name__)
@@ -16,49 +17,34 @@ model.eval()
 with open("scaler.pkl", "rb") as f:
     scaler = pickle.load(f)
 
-# 2) Helper: Convert numeric minutes to model intensity
-def map_minutes_to_intensity(minutes):
-    """
-    <30 -> class 0 (intensity 0.0)
-    30-60 -> class 1 (intensity 1/3)
-    60-120 -> class 2 (intensity 2/3)
-    >=120 -> class 3 (intensity 1.0)
-    """
-    if minutes < 30:
-        cls = 0
-    elif minutes < 60:
-        cls = 1
-    elif minutes < 120:
-        cls = 2
-    else:
-        cls = 3
-    return cls / 3.0
-
-# 3) Prediction Endpoint
+# 2) Prediction Endpoint
 @app.route('/predict', methods=['POST'])
 def predict():
     """
     Expects JSON with keys:
-      - "study_time" (float, minutes)
-      - "break_time" (float, minutes)
-      - "schedule_satisfaction" (float)
-    Returns JSON with predicted class, duration, and probabilities.
+      - "review_id" (optional, integer)
+      - "sessionDuration" (float, in minutes)
+      - "breakTime" (float, in minutes)
+      - "scheduleSatisfaction" (float)
+    Converts minutes to hours and returns JSON with predicted class, duration, and probabilities.
     """
     try:
         data = request.get_json()
-        study_time = float(data['study_time'])
-        break_time = float(data['break_time'])
-        schedule_satisfaction = float(data['schedule_satisfaction'])
+        review_id = data.get('review_id', None)
+        session_duration = float(data['sessionDuration'])
+        break_time = float(data['breakTime'])
+        schedule_satisfaction = float(data['scheduleSatisfaction'])
     except (KeyError, ValueError):
         return jsonify({
-            "error": "Invalid or missing keys. Expect study_time, break_time, schedule_satisfaction."
+            "error": "Invalid or missing keys. Expect sessionDuration, breakTime, scheduleSatisfaction."
         }), 400
 
-    # Convert numeric study_time to normalized intensity
-    study_intensity = map_minutes_to_intensity(study_time)
+    # Convert minutes to hours
+    session_duration_hours = session_duration / 60.0
+    break_time_hours = break_time / 60.0
 
-    # Construct features [study_intensity, break_time, schedule_satisfaction]
-    features = np.array([[study_intensity, break_time, schedule_satisfaction]], dtype=np.float32)
+    # Construct features [session_duration_hours, break_time_hours, schedule_satisfaction]
+    features = np.array([[session_duration_hours, break_time_hours, schedule_satisfaction]], dtype=np.float32)
     features_scaled = scaler.transform(features)
     features_tensor = torch.tensor(features_scaled, dtype=torch.float32)
 
@@ -68,14 +54,17 @@ def predict():
         probabilities = F.softmax(logits, dim=1).numpy()[0]
         predicted_class = int(np.argmax(probabilities))
 
-    # Map predicted class to a duration label
     predicted_duration = map_class_to_duration(predicted_class)
 
-    return jsonify({
+    response = {
         "predicted_class": predicted_class,
         "predicted_duration": predicted_duration,
         "probabilities": probabilities.tolist()
-    })
+    }
+    if review_id is not None:
+        response["review_id"] = review_id
+
+    return jsonify(response)
 
 if __name__ == '__main__':
     # By default, Flask runs on port 5000

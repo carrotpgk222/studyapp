@@ -1,7 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
 // Open (or create) the database file
-let db = new sqlite3.Database('./study_app.db', (err) => {
+
+const dbPath = path.join(__dirname, '../../../study_app.db');
+
+let db = new sqlite3.Database(dbPath , (err) => {
   if (err) {
     return console.error(err.message);
   }
@@ -17,6 +21,7 @@ db.serialize(() => {
     DROP TABLE IF EXISTS subjects;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS reviews;
+    DROP TABLE IF EXISTS time_prediction;
   `, (err) => {
     if (err) {
       console.error('Error dropping tables:', err.message);
@@ -52,11 +57,11 @@ db.serialize(() => {
 
     CREATE TABLE Study_Sessions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL,
+      user_id INTEGER,
       subject_id INTEGER,
       start_time DATETIME NOT NULL,
       end_time DATETIME,
-      notes TEXT,
+      total_time INTEGER,
       FOREIGN KEY (user_id) REFERENCES users(id),
       FOREIGN KEY (subject_id) REFERENCES subjects(id)
     );
@@ -90,7 +95,7 @@ db.serialize(() => {
 
 
     CREATE TABLE time_prediction (
-    time_prediction_id INT AUTO_INCREMENT PRIMARY KEY,
+    time_prediction_id INTEGER PRIMARY KEY AUTOINCREMENT,
     review_id INT NOT NULL,
     predicted_class INT NOT NULL,
     predicted_duration VARCHAR(50) NOT NULL,

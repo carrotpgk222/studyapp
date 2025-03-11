@@ -46,69 +46,47 @@ module.exports.createReview = (req, res) => {
  *  - scheduleSatisfaction (number)
  */
 module.exports.callAI = (req, res) => {
-  const { review_id, sessionDuration, breakTime, scheduleSatisfaction } = req.body;
+  const { sessionDuration, breakTime, scheduleSatisfaction, review_id } = req.body;
 
   // Validate input
-  if (
-    review_id == null ||
-    sessionDuration == null ||
-    breakTime == null ||
-    scheduleSatisfaction == null
-  ) {
+  if (sessionDuration == null || breakTime == null || scheduleSatisfaction == null) {
     return res.status(400).json({ error: 'Missing required fields for AI call.' });
   }
 
-  // Debug: log data being sent to AI
   console.log('Sending to AI:', {
-    study_time: sessionDuration,
-    break_time: breakTime,
-    schedule_satisfaction: scheduleSatisfaction
+    sessionDuration,
+    breakTime,
+    scheduleSatisfaction
   });
 
-  // Call Flask /predict
   axios.post('http://127.0.0.1:5000/predict', {
-    study_time: sessionDuration,
-    break_time: breakTime,
-    schedule_satisfaction: scheduleSatisfaction
+    sessionDuration: sessionDuration,         // Updated key
+    breakTime: breakTime,                     // Updated key
+    scheduleSatisfaction: scheduleSatisfaction // Updated key
   })
-    .then(flaskResponse => {
-      const aiData = flaskResponse.data; // e.g. { predicted_class, predicted_duration, probabilities }
+  .then(flaskResponse => {
+    const aiData = flaskResponse.data; // e.g. { predicted_class, predicted_duration, probabilities }
 
-      // Now store the AI result in time_prediction table
-      const insertData = {
-        review_id: review_id,
-        predicted_class: aiData.predicted_class,
-        predicted_duration: aiData.predicted_duration,
-        probabilities: JSON.stringify(aiData.probabilities)
-      };
-
-      reviewsModel.insertTimePrediction(insertData, (err, result) => {
-        if (err) {
-          console.error('Error inserting AI prediction:', err);
-          return res.status(500).json({ error: 'Error storing AI prediction' });
-        }
-
-        // Return success with AI data
-        return res.status(200).json({
-          message: 'AI prediction successful, stored in DB',
-          aiPrediction: aiData
-        });
-      });
-    })
-    .catch(aiError => {
-      console.error('Error calling AI:', aiError.message);
-      if (aiError.response) {
-        console.error('AI response status:', aiError.response.status);
-        console.error('AI response data:', aiError.response.data);
-      } else {
-        console.error('No response received from AI');
-      }
-
-      return res.status(500).json({
-        error: 'Failed to call AI',
-        details: aiError.message
-      });
+    // Now, if you want, you can store this result in the DB...
+    // (In this snippet, we just return the result)
+    return res.status(200).json({
+      message: 'AI prediction successful',
+      aiPrediction: aiData
     });
+  })
+  .catch(aiError => {
+    console.error('Error calling AI:', aiError.message);
+    if (aiError.response) {
+      console.error('AI response status:', aiError.response.status);
+      console.error('AI response data:', aiError.response.data);
+    } else {
+      console.error('No response received from AI');
+    }
+    return res.status(500).json({
+      error: 'Failed to call AI',
+      details: aiError.message
+    });
+  });
 };
 
 
