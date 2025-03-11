@@ -52,7 +52,7 @@ const Login = () => {
     <div className="login-page">
       {/* Logo (Outside the Form Container) */}
       <div className="logo">
-        <img src="https://i.imgur.com/FLXaWS.png" alt="Logo" />
+        <img src="/logo.png" alt="Logo" />
       </div>
 
       {/* Form Container */}

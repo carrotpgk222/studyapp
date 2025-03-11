@@ -70,12 +70,12 @@ const Register = () => {
         <div className="register-form">
           <h1>Create Your Account</h1>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Username</label>
             <input
               type="text"
               id="name"
               name="name"
-              placeholder="*Name"
+              placeholder="*Username"
               required
               value={formData.name}
               onChange={handleChange}
