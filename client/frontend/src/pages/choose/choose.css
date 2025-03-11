@@ -8,19 +8,6 @@
     font-family: 'Nunito', sans-serif;
 }
 
-/* Body Styling */
-body {
-    background: linear-gradient(135deg, #f3e7e9, #e3eeff, #fde2e4, #d6e5fa, #fff3e0, #f3e7e9);
-    background-size: 800% 800%;
-    animation: gradientShiftBackground 40s infinite ease-in-out;
-    background-attachment: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
-}
 
 /* Gradient Background Animation */
 @keyframes gradientShiftBackground {
@@ -29,22 +16,27 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* Wrapper */
-.choose-wrapper {
+/* Body Styling */
+body {
+    background: linear-gradient(135deg, #f3e7e9, #e3eeff, #fde2e4, #d6e5fa, #fff3e0, #f3e7e9);
+    animation: gradientShiftBackground 40s infinite ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    overflow: hidden; /* Prevents unnecessary scrolling */
+}
+
+/* Logo Styling */
+.logo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 400px;
-    height: 100vh;
     position: relative;
-}
-
-/* Ensure logo is above the card */
-.logo {
-    margin-bottom: -30px;
-    z-index: 10;
+    max-width: 400px;
 }
 
 .logo img {
@@ -52,22 +44,26 @@ body {
     height: auto;
 }
 
-/* Main container styling */
+/* Container Styling */
 .container {
-    width: 330px;
-    padding: 40px 25px;
+    width: 100%;
+    max-width: 380px;
+    max-height: 30vh; /* Ensures it doesn't overflow */
+    padding: 20px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow-y: auto;
+    margin-bottom: 80px; /* Ensures space for the button container */
 }
 
-/* Title Styling - REDUCED SIZE */
+/* Title Styling */
 .title {
     font-size: 16px;
     font-weight: bold;
@@ -78,7 +74,7 @@ body {
     margin-bottom: 12px;
 }
 
-/* Gradient Effect on "Unlock", "Your" and "Potential" */
+/* Gradient Effect on "Unlock", "Your", and "Potential" */
 .highlight {
     background: linear-gradient(45deg, #318ba4, #ff6b6b);
     background-clip: text;
@@ -99,9 +95,9 @@ body {
     }
 }
 
-/* Description - FURTHER REDUCED SIZE */
+/* Description */
 .descriptionOne, .descriptionTwo {
-    font-size: 9px;
+    font-size: 5px;
     color: #222;
     line-height: 1.3;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
@@ -109,16 +105,11 @@ body {
     margin-bottom: 3px;
 }
 
-.descriptionTwo {
-    margin-bottom: 10px;
-}
-
-/* Slogan - FURTHER REDUCED SIZE */
+/* Slogan */
 .slogan {
     font-size: 8px;
     color: #555;
     font-style: italic;
-    margin-bottom: 20px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
 
@@ -142,6 +133,7 @@ button {
     transition: all 0.3s ease;
     font-family: 'Nunito', sans-serif;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
 }
 
 /* Login Button */
@@ -172,9 +164,13 @@ button {
 
 /* Media query for smaller screens */
 @media (max-width: 360px) {
+    .logo img {
+        width: 180px;
+    }
+    
     .container {
         width: 90%;
-        padding: 30px 15px;
+        padding: 25px 15px;
     }
     
     .title {
@@ -182,7 +178,7 @@ button {
     }
     
     .descriptionOne, .descriptionTwo {
-        font-size: 8px;
+        font-size: 4px;
     }
     
     .slogan {
