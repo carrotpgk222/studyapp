@@ -65,15 +65,16 @@ body {
     z-index: 0;
 }
 
-/* Keeping the rest of the code the same */
 .calendar {
     margin-top: 20px;
 }
 
-.day-names, .days-grid {
+.day-names,
+.days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
+    font-weight:bold
 }
 
 .day-names span {
@@ -91,15 +92,18 @@ body {
     color: #333;
 }
 
+/* Translucent highlight for active day */
 .days-grid div.active {
-    background: #1a5a7d;
-    color: white;
+    background: rgba(26, 90, 125, 0.5); /* translucent blue background */
+    color: #000;                        /* solid black text color */
     font-weight: bold;
 }
 
 .days-grid div.highlight {
-    background: #56addc;
+    background: rgba(86, 173, 220, 0.4); /* translucent lighter blue */
+    color: #000;                         /* solid black text color */
 }
+
 
 .stats-card .stats-section {
     display: flex;
@@ -124,7 +128,8 @@ body {
     width: 100%;
 }
 
-.stat-box h2, .stat-box h4 {
+.stat-box h2,
+.stat-box h4 {
     margin: 0;
 }
 
@@ -137,7 +142,8 @@ body {
     font-size: 14px;
 }
 
-.stat-box h2, .stat-box h4 {
+.stat-box h2,
+.stat-box h4 {
     font-size: 16px;
     font-weight: bold;
 }
@@ -185,6 +191,7 @@ body {
     color: #777;
 }
 
-.start-time, .end-time {
+.start-time,
+.end-time {
     color: #4a90e2;
 }
