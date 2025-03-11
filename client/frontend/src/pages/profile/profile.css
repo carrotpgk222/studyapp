@@ -14,41 +14,37 @@ body {
     height: 100vh;
 }
 
-.container {
-    width: 95%;
-    max-width: 1000px; /* Increased max-width to make the layout wider */
+.profile-container {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 90%;
+    max-width: 400px;
 }
 
-/* Logo Container */
-.logo-container {
-    text-align: center;
-    margin-bottom: 5px; /* Reduced space */
-  }
-  .logo-container img {
-    width: 400px;
-  }  
-
-.calendar-section, .stats-section {
-    width: 100%; /* Ensures they take up full container width */
-    background: #ffffff;
-    padding: 40px; /* Slightly increased padding */
+.card {
+    background: #fff;
+    padding: 20px;
     border-radius: 10px;
-    text-align: center;
-    position: relative;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Calendar card adjustments */
+.card.calendar-card {
+    width: calc(100% + 20px); /* Increased width of card */
+    padding: 20px;
+    position: relative;
+}
+
 .month-nav {
-    position: absolute;
-    top: 20px;
     background: none;
     border: none;
     color: #555;
     font-size: 18px;
     cursor: pointer;
+    position: absolute;
+    top: 20px;
+    z-index: 1;
 }
 
 .month-nav.left {
@@ -60,11 +56,16 @@ body {
 }
 
 .month-display {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     color: #333;
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    z-index: 0;
 }
 
+/* Keeping the rest of the code the same */
 .calendar {
     margin-top: 20px;
 }
@@ -82,7 +83,7 @@ body {
 }
 
 .days-grid div {
-    padding: 12px;
+    padding: 10px;
     text-align: center;
     border-radius: 5px;
     background: #f9f3f4;
@@ -91,24 +92,57 @@ body {
 }
 
 .days-grid div.active {
-    background: #1a5a7d; /* Darker blue for active day */
+    background: #1a5a7d;
     color: white;
     font-weight: bold;
 }
 
 .days-grid div.highlight {
-    background: #56addc; /* Lighter blue for highlights */
+    background: #56addc;
 }
 
-.stats-section {
-    background: #ffffff;
-    padding: 25px; /* Increased padding */
-    border-radius: 10px;
+.stats-card .stats-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.selected-date {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.tabs {
+.stat-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.stat-box h2, .stat-box h4 {
+    margin: 0;
+}
+
+.stat-box small {
+    width: 45%;
+}
+
+.stat-box span {
+    color: #777;
+    font-size: 14px;
+}
+
+.stat-box h2, .stat-box h4 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.stats-card .tabs {
     display: flex;
     justify-content: space-around;
     margin-bottom: 10px;
@@ -121,7 +155,7 @@ body {
 }
 
 .tab.active {
-    border-bottom: 2px solid #1a5a7d; /* Darker blue for active tab */
+    border-bottom: 2px solid #1a5a7d;
     color: #1a5a7d;
 }
 
@@ -135,8 +169,8 @@ body {
 }
 
 .stat-box.small {
-    width: 100%; /* Make smaller stats full width */
-    display: block; /* Stack them instead of side by side */
+    display: inline-block;
+    width: 48%;
 }
 
 .stat-box h2 {
