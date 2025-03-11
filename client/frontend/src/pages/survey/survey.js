@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import './survey.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Survey = () => {
+
+  const navigate = useNavigate();
+
+
   const questions = [
     {
       id: 1,
@@ -75,7 +80,7 @@ const Survey = () => {
 
     console.log('User Satisfaction Level:', satisfactionLevel);
     alert('Thank you for completing the survey!');
-    window.location.href = 'thank-you.html'; // Redirect to a thank-you page
+    navigate('/main'); 
   };
 
   const currentQuestion = questions[currentQuestionIndex];

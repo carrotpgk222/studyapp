@@ -46,10 +46,15 @@ module.exports.createReview = (req, res) => {
  *  - scheduleSatisfaction (number)
  */
 module.exports.callAI = (req, res) => {
-  const { sessionDuration, breakTime, scheduleSatisfaction } = req.body;
+  const { review_id, sessionDuration, breakTime, scheduleSatisfaction } = req.body;
 
   // Validate input
-  if (sessionDuration == null || breakTime == null || scheduleSatisfaction == null) {
+  if (
+    review_id == null ||
+    sessionDuration == null ||
+    breakTime == null ||
+    scheduleSatisfaction == null
+  ) {
     return res.status(400).json({ error: 'Missing required fields for AI call.' });
   }
 
@@ -67,10 +72,27 @@ module.exports.callAI = (req, res) => {
     schedule_satisfaction: scheduleSatisfaction
   })
     .then(flaskResponse => {
-      // Return AI prediction to client
-      return res.status(200).json({
-        message: 'AI prediction successful',
-        aiPrediction: flaskResponse.data
+      const aiData = flaskResponse.data; // e.g. { predicted_class, predicted_duration, probabilities }
+
+      // Now store the AI result in time_prediction table
+      const insertData = {
+        review_id: review_id,
+        predicted_class: aiData.predicted_class,
+        predicted_duration: aiData.predicted_duration,
+        probabilities: JSON.stringify(aiData.probabilities)
+      };
+
+      reviewsModel.insertTimePrediction(insertData, (err, result) => {
+        if (err) {
+          console.error('Error inserting AI prediction:', err);
+          return res.status(500).json({ error: 'Error storing AI prediction' });
+        }
+
+        // Return success with AI data
+        return res.status(200).json({
+          message: 'AI prediction successful, stored in DB',
+          aiPrediction: aiData
+        });
       });
     })
     .catch(aiError => {
