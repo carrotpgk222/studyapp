@@ -29,3 +29,19 @@ module.exports.selectAllReviews = (callback) => {
     const VALUES = [];
     pool.query(SQLSTATEMENT,VALUES, callback)
 }
+
+module.exports.insertTimePrediction = (data, callback) => {
+    const SQLSTATEMENT = `
+        INSERT INTO time_prediction (review_id, predicted_class, predicted_duration, probabilities)
+        VALUES (?, ?, ?, ?)
+    `;
+    // We'll store probabilities as a JSON string
+    const VALUES = [
+        data.review_id,
+        data.predicted_class,
+        data.predicted_duration,
+        data.probabilities
+    ];
+
+    pool.query(SQLSTATEMENT, VALUES, callback);
+};
