@@ -22,183 +22,113 @@ body {
     padding: 20px;
     position: relative;
     overflow: hidden;
-}
-
-/* Ripple Effect */
-body::before,
-body::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200vw;
-    height: 200vw;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    animation: rippleEffect 10s infinite ease-in-out;
-    z-index: -1;
-}
-
-body::after {
-    animation-delay: 5s;
-}
-
-/* Ripple Animation */
-@keyframes rippleEffect {
-    0% {
-        transform: translate(-50%, -50%) scale(0);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0;
-    }
-}
-
-/* Gradient Background Animation */
-@keyframes gradientShiftBackground {
-    0% { background-position: 0% 50%; }
-    10% { background-position: 12.5% 50%; }
-    20% { background-position: 25% 50%; }
-    30% { background-position: 37.5% 50%; }
-    40% { background-position: 50% 50%; }
-    50% { background-position: 62.5% 50%; }
-    60% { background-position: 75% 50%; }
-    70% { background-position: 87.5% 50%; }
-    80% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    flex-direction: column;
 }
 
 /* Logo Styling */
 .logo {
     position: absolute;
-    top: 60px; /* Move it above the form */
+    top: 30px;
     left: 50%;
     transform: translateX(-50%);
     width: 80%;
-    max-width: 540px;
-    z-index: 10; /* Ensures it's above other elements */
+    max-width: 200px;
+    z-index: 10;
 }
 
 .logo img {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-    border: none !important;
-    background: none !important;
-    margin-bottom: 40px !important; /* Increased space below the logo */
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border: none;
+    background: none;
 }
 
 /* Container Styling (Form) */
 .container {
-    position: relative; /* Ensure form stays in place */
-    background-color: rgba(250, 250, 250, 0.8);
+    position: relative;
+    background-color: rgba(250, 250, 250, 0.9);
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    width: 100%;
-    max-width: 950px !important;
-    z-index: 1; /* Lower than the logo */
-    margin-top: 250px; /* Ensures form moves below the logo */
-    min-height: 480px;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    z-index: 1;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Form Title */
 h1 {
-    font-size: 26px !important;
-    text-align: center !important;
-    color: #4d5b6c !important;
-    margin-bottom: 30px !important;
-    font-weight: 600 !important;
-}
-
-/* Input Labels */
-label {
-    display: block !important;
-    font-size: 14px !important;
-    color: #333 !important;
-    margin-bottom: 5px !important;
-    font-weight: 500 !important;
+    font-size: 24px;
+    text-align: center;
+    color: #4d5b6c;
+    margin-bottom: 15px;
+    font-weight: 600;
 }
 
 /* Input Fields */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    width: 100% !important;
-    padding: 12px !important;
-    margin-bottom: 20px !important;
-    border-radius: 8px !important;
-    border: 1px solid #e0e0e0 !important;
-    font-size: 16px !important;
-    color: #333 !important;
-    background-color: #f8f8f8 !important;
-    transition: border-color 0.3s ease !important;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    font-size: 16px;
+    color: #333;
+    background-color: #f8f8f8;
+    transition: border-color 0.3s ease;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border-color: #3b97b9 !important;
-    outline: none !important;
-    background-color: #fff !important;
-}
-
-/* Required Info */
-.required-info {
-    font-size: 14px !important;
-    color: #333 !important;
-    margin-top: 10px !important;
-    text-align: left !important;
-    position: relative !important;
-    left: 0 !important;
-    top: -25px !important;
-}
-
-.asterisk {
-    color: red !important;
+input:focus {
+    border-color: #3b97b9;
+    outline: none;
+    background-color: #fff;
 }
 
 /* Submit Button */
 button.submit-btn {
-    background-color: #3b97b9 !important;
-    color: white !important;
-    padding: 14px !important;
-    width: 100% !important;
-    border-radius: 8px !important;
-    border: none !important;
-    font-size: 16px !important;
-    cursor: pointer !important;
-    transition: background-color 0.3s ease, transform 0.2s ease !important;
+    background-color: #3b97b9;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button.submit-btn:hover {
-    background-color: #318ba4 !important;
-    transform: translateY(-2px) !important;
+    background-color: #318ba4;
+    transform: translateY(-2px);
 }
 
 button.submit-btn:active {
-    transform: translateY(2px) !important;
+    transform: translateY(2px);
 }
 
 /* Login Redirect */
 .login-redirect {
-    text-align: center !important;
-    margin-top: 20px !important;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .login-redirect p {
-    font-size: 14px !important;
-    color: #777 !important;
+    font-size: 14px;
+    color: #777;
 }
 
 .login-redirect a {
-    color: #4d5b6c !important;
-    text-decoration: none !important;
-    font-weight: 600 !important;
+    color: #4d5b6c;
+    text-decoration: none;
+    font-weight: 600;
 }
 
 .login-redirect a:hover {
-    text-decoration: underline !important;
+    text-decoration: underline;
 }
