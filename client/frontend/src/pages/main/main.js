@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./main.css";
-import 'font-awesome/css/font-awesome.min.css';  // Import Font Awesome
-import { useNavigate } from 'react-router-dom'; // For redirection
-
+import 'font-awesome/css/font-awesome.min.css';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
-   const navigate = useNavigate()
+   const navigate = useNavigate();
 
   const [date, setDate] = useState("");
   const [studySeconds, setStudySeconds] = useState(0);
@@ -77,9 +76,9 @@ const Main = () => {
   };
 
   return (
-    <div className="container">
+    <>
       <div className="logo-container">
-        <img src="https://i.imgur.com/FLXaWSm.png" alt="App Logo" />
+        <img src="/logo.png" alt="App Logo" />
       </div>
       <div className="timer-section">
         <p className="date">{date}</p>
@@ -92,7 +91,7 @@ const Main = () => {
         <div className="controls">
           <i className="fa fa-play" onClick={startSession}></i>
           <i className="fa fa-pause" onClick={pauseSession}></i>
-          <i className="fa-solid fa-rotate-left" onClick={resetSession}></i> {/* Updated Reset Icon */}
+          <i className="fa-solid fa-rotate-left" onClick={resetSession}></i>
         </div>
       </div>
       <div className="stats-section">
@@ -115,7 +114,7 @@ const Main = () => {
         <span className="nav-item">📅 Timetable</span>
         <span className="nav-item">⋮ More</span>
       </div>
-    </div>
+    </>
   );
 };
 

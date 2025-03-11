@@ -16,6 +16,22 @@
     100% { background-position: 0% 50%; }
 }
 
+
+
+.logo img {
+    width: 220px;
+    height: auto;
+}
+
+/* Logo Styling */
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    max-width: 400px;
+}
+
 /* Body Styling */
 body {
     background: linear-gradient(135deg, #f3e7e9, #e3eeff, #fde2e4, #d6e5fa, #fff3e0, #f3e7e9);
@@ -30,25 +46,11 @@ body {
     overflow: hidden; /* Prevents unnecessary scrolling */
 }
 
-/* Logo Styling */
-.logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    max-width: 400px;
-}
-
-.logo img {
-    width: 220px;
-    height: auto;
-}
-
 /* Container Styling */
 .container {
     width: 100%;
     max-width: 380px;
-    max-height: 30vh; /* Ensures it doesn't overflow */
+    max-height: 20vh; /* Ensures it doesn't overflow */
     padding: 20px;
     text-align: center;
     display: flex;
