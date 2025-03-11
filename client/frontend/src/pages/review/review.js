@@ -63,6 +63,7 @@ const Review = () => {
         // Registration successful
         console.log('Review successful:', data);
         alert('Review submitted successfully!');
+        navigate("/profile")
       })
       .catch(error => {
         // Handle errors

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./main.css";
 import 'font-awesome/css/font-awesome.min.css';  // Import Font Awesome
+import { useNavigate } from 'react-router-dom'; // For redirection
+
 
 const Main = () => {
+   const navigate = useNavigate()
+
   const [date, setDate] = useState("");
   const [studySeconds, setStudySeconds] = useState(0);
   const [breakTime, setBreakTime] = useState(300);
@@ -36,6 +40,7 @@ const Main = () => {
   const resetStudyTimer = () => {
     pauseStudyTimer();
     setStudySeconds(0);
+    navigate("/review");
   };
 
   const startBreakTimer = () => {
