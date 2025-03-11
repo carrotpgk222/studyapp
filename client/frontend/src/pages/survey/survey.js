@@ -7,16 +7,10 @@ const Survey = () => {
       id: 1,
       questionText: 'How long is your typical study session?',
       options: [
-        "<30min",
-        "<1hr",
-        "1hr",
-        "2hr",
-        "3hr",
-        "4hr",
-        "5hr",
-        "6hr",
-        "7hr",
-        "8hr"
+        "Less than 30 minutes",
+        "30-60 minutes",
+        "1-2 hours",
+        "More than 2 hours"
       ]
     },
     {
@@ -74,7 +68,7 @@ const Survey = () => {
 
   const handleSubmit = () => {
     const satisfactionLevel = responses.satisfactionLevel;
-    if (!satisfactionLevel) {
+    if (satisfactionLevel != responses.satisfactionLevel) {
       alert('Please select an option before submitting.');
       return;
     }
@@ -89,7 +83,7 @@ const Survey = () => {
   return (
     <div>
       <div className="logo">
-        <img src="https://i.imgur.com/FLXaWSm.png" alt="Logo" />
+        <img src="https://i.imgur.com/FLXaWS.png" alt="Logo" />
       </div>
 
       <div className="container">

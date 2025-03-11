@@ -21,3 +21,11 @@ module.exports.insertReview = (data, callback) => {
         callback(null, { review_id: result.insertId });
     });
 };
+module.exports.selectAllReviews = (callback) => {
+    const SQLSTATEMENT = `
+        SELECT *
+        FROM Reviews;
+    `;
+    const VALUES = [];
+    pool.query(SQLSTATEMENT,VALUES, callback)
+}

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './review.css'; 
-import axiosMethod from '../../js/querycmds'; // Adjust path to wherever you define axiosMethod
+import { useNavigate } from 'react-router-dom';
 
 const Review = () => {
+  const navigate = useNavigate()
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
   const [feedback, setFeedback] = useState('');
@@ -20,7 +21,6 @@ const Review = () => {
   // Handle form submission
   const handleSubmitReview = (e) => {
     e.preventDefault();
-
     // Example: Hard-coded sessionDuration of 45 minutes
     // If you track the actual session length in state or props, use that instead
     const reviewData = {
@@ -34,17 +34,41 @@ const Review = () => {
     };
 
     // The endpoint URL for creating a new review
-    const url = 'http://localhost:3000/reviews';
+    const url = 'http://localhost:5000/api/reviews';
 
-    axiosMethod(url, (status, data) => {
-      if (status === 201) {
-        console.log('Review posted successfully:', data);
-        alert('Review submitted!');
-      } else {
-        console.error('Review post failed:', data);
-        alert('Failed to submit review. Please try again.');
-      }
-    }, 'POST', reviewData);
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // The server expects fields named "username", "email", and "password"
+      // If your server expects "name" instead of "username", adjust accordingly
+      body: JSON.stringify({
+        sessionDuration: 45,
+      // This might store the "study session" rating as selectedEmoji
+      rating: selectedEmoji,
+      // This might store "AI satisfaction" as selectedRating
+      scheduleSatisfaction: selectedRating,
+      feedback: feedback,
+      user_id: 1 // or wherever you get the logged-in user ID
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Registration successful
+        console.log('Review successful:', data);
+        alert('Review submitted successfully!');
+      })
+      .catch(error => {
+        // Handle errors
+        console.error('Review error:', error);
+        alert('Review submission failed. Please try again.');
+      });
   };
 
   return (

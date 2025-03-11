@@ -1,74 +1,82 @@
 import torch
+import torch.nn.functional as F
 import numpy as np
-from train_time import (
-    StudyDurationPredictor,
-    map_class_to_duration,
-    map_break_frequency_to_minutes,
-    encode_study_intensity,
-    load_and_preprocess_data
-)
+import pickle
+from flask import Flask, request, jsonify
 
-def load_model(model_path="study_duration_model.pth", input_dim=3):
-    """ Load the trained PyTorch model for inference. """
-    model = StudyDurationPredictor(input_dim)
-    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
-    model.eval()
-    return model
+from train_time import StudyDurationPredictor, map_class_to_duration
 
-def predict_study_duration(model, scaler, typical_study_str, break_freq_str, schedule_sat):
+app = Flask(__name__)
+
+# 1) Load Model and Scaler
+model = StudyDurationPredictor(input_dim=3)
+model.load_state_dict(torch.load("study_duration_model.pth", map_location=torch.device('cpu')))
+model.eval()
+
+with open("scaler.pkl", "rb") as f:
+    scaler = pickle.load(f)
+
+# 2) Helper: Convert numeric minutes to model intensity
+def map_minutes_to_intensity(minutes):
     """
-    Predict tomorrow's recommended study duration.
+    <30 -> class 0 (intensity 0.0)
+    30-60 -> class 1 (intensity 1/3)
+    60-120 -> class 2 (intensity 2/3)
+    >=120 -> class 3 (intensity 1.0)
     """
-    study_intensity = encode_study_intensity(typical_study_str)
-    break_freq_mins = map_break_frequency_to_minutes(break_freq_str)
+    if minutes < 30:
+        cls = 0
+    elif minutes < 60:
+        cls = 1
+    elif minutes < 120:
+        cls = 2
+    else:
+        cls = 3
+    return cls / 3.0
 
-    new_data = np.array([[study_intensity, break_freq_mins, schedule_sat]], dtype=np.float32)
+# 3) Prediction Endpoint
+@app.route('/predict', methods=['POST'])
+def predict():
+    """
+    Expects JSON with keys:
+      - "study_time" (float, minutes)
+      - "break_time" (float, minutes)
+      - "schedule_satisfaction" (float)
+    Returns JSON with predicted class, duration, and probabilities.
+    """
+    try:
+        data = request.get_json()
+        study_time = float(data['study_time'])
+        break_time = float(data['break_time'])
+        schedule_satisfaction = float(data['schedule_satisfaction'])
+    except (KeyError, ValueError):
+        return jsonify({
+            "error": "Invalid or missing keys. Expect study_time, break_time, schedule_satisfaction."
+        }), 400
 
-    new_data_scaled = scaler.transform(new_data)
-    new_tensor = torch.tensor(new_data_scaled, dtype=torch.float32)
+    # Convert numeric study_time to normalized intensity
+    study_intensity = map_minutes_to_intensity(study_time)
 
+    # Construct features [study_intensity, break_time, schedule_satisfaction]
+    features = np.array([[study_intensity, break_time, schedule_satisfaction]], dtype=np.float32)
+    features_scaled = scaler.transform(features)
+    features_tensor = torch.tensor(features_scaled, dtype=torch.float32)
+
+    # Get model prediction
     with torch.no_grad():
-        logits = model(new_tensor)
-        pred_class = torch.argmax(logits, dim=1).item()
+        logits = model(features_tensor)
+        probabilities = F.softmax(logits, dim=1).numpy()[0]
+        predicted_class = int(np.argmax(probabilities))
 
-    pred_label = map_class_to_duration(pred_class)
-    return pred_class, pred_label
+    # Map predicted class to a duration label
+    predicted_duration = map_class_to_duration(predicted_class)
 
-def main():
-    # Load trained model
-    model = load_model("study_duration_model.pth", input_dim=3)
-
-    # Load scaler for correct preprocessing
-    _, _, scaler, _ = load_and_preprocess_data()
-
-    # 20 Test Cases
-    test_cases = [
-        ("Less than 30 minutes", "Rarely", 2),
-        ("30-60 minutes", "Often", 4),
-        ("1-2 hours", "Sometimes", 3),
-        ("More than 2 hours", "Never", 5),
-        ("1-2 hours", "Always", 1),
-        ("30-60 minutes", "Rarely", 1),
-        ("Less than 30 minutes", "Always", 3),
-        ("More than 2 hours", "Sometimes", 2),
-        ("1-2 hours", "Often", 5),
-        ("30-60 minutes", "Never", 4),
-        ("1-2 hours", "Rarely", 2),
-        ("Less than 30 minutes", "Sometimes", 1),
-        ("More than 2 hours", "Always", 3),
-        ("30-60 minutes", "Often", 2),
-        ("1-2 hours", "Sometimes", 4),
-        ("Less than 30 minutes", "Never", 5),
-        ("More than 2 hours", "Rarely", 3),
-        ("1-2 hours", "Always", 2),
-        ("30-60 minutes", "Sometimes", 1),
-        ("More than 2 hours", "Often", 4)
-    ]
-
-    # Run test cases
-    for i, (study, break_freq, sat) in enumerate(test_cases, 1):
-        pred_class, pred_label = predict_study_duration(model, scaler, study, break_freq, sat)
-        print(f"Test Case {i}: {study}, {break_freq}, {sat} -> Predicted: {pred_label}")
+    return jsonify({
+        "predicted_class": predicted_class,
+        "predicted_duration": predicted_duration,
+        "probabilities": probabilities.tolist()
+    })
 
 if __name__ == '__main__':
-    main()
+    # By default, Flask runs on port 5000
+    app.run(debug=True)
