@@ -6,16 +6,15 @@ const Choose = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="choose-wrapper">
-      {/* Logo moved outside the container */}
+    
       <div className="logo">
-        <img src="" alt="App Logo" />
-      </div>
+        <img src="/logo.png" alt="App Logo" />
+      
 
       <div className="container">
-      <h1 className="title">
-  <span className="highlight">Unlock</span> <span className="highlight">Your</span> <span className="highlight">Potential</span>
-</h1>
+        <h1 className="title">
+          <span className="highlight">Unlock</span> <span className="highlight">Your</span> <span className="highlight">Potential</span>
+        </h1>
 
         <p className="descriptionOne">
           Manage your time, improve your education, and get responsive feedback.
@@ -41,3 +40,4 @@ const Choose = () => {
 };
 
 export default Choose;
+
