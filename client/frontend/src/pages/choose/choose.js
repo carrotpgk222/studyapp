@@ -1,48 +1,40 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";  // Import useNavigate from react-router-dom
-import "./choose.css"; // Make sure to create and import your CSS file
+import { useNavigate } from "react-router-dom";  
+import "./choose.css"; 
 
 const Choose = () => {
-  const navigate = useNavigate(); // Initialize the navigate function
-
-  // Navigate to "/login"
-  const handleLogin = () => {
-    navigate("/login");
-  };
-
-  // Navigate to "/register"
-  const handleSignup = () => {
-    navigate("/register");
-  };
+  const navigate = useNavigate();
 
   return (
-    <div className="container">
+    <div className="choose-wrapper">
+      {/* Logo moved outside the container */}
       <div className="logo">
-        <img src="https://i.imgur.com/FLXaWSm.png" alt="App Logo" />
+        <img src="/logo.png" alt="App Logo" />
       </div>
-      <h1 className="title">
-        <span className="highlight">Unlock</span> Your <span className="highlight">Potential</span>
-      </h1>
 
-      <p className="descriptionOne">
-        Manage your time, improve your education, and get responsive feedback.
-      </p>
-      <p className="descriptionTwo">
-        Customize your learning journey today!
-      </p>
+      <div className="container">
+        <h1 className="title">
+          <span className="highlight">Unlock</span> Your <span className="highlight">Potential</span>
+        </h1>
 
-      <p className="slogan">Deeply Seeking Knowledge, One Step at a Time</p>
+        <p className="descriptionOne">
+          Manage your time, improve your education, and get responsive feedback.
+        </p>
+        <p className="descriptionTwo">
+          Customize your learning journey today!
+        </p>
 
-      <div className="button-container">
-        {/* Login Button */}
-        <button className="login-button" onClick={handleLogin} id="login-btn">
-          Log in
-        </button>
-        
-        {/* Sign Up Button */}
-        <button className="signup-button" onClick={handleSignup} id="signup-btn">
-          Sign up
-        </button>
+        <p className="slogan">Deeply Seeking Knowledge, One Step at a Time</p>
+
+        <div className="button-container">
+          <button className="login-button" onClick={() => navigate("/login")} id="login-btn">
+            Log in
+          </button>
+          
+          <button className="signup-button" onClick={() => navigate("/register")} id="signup-btn">
+            Sign up
+          </button>
+        </div>
       </div>
     </div>
   );
