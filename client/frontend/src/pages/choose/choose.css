@@ -25,52 +25,65 @@ body {
 /* Gradient Background Animation */
 @keyframes gradientShiftBackground {
     0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-/* Container */
+/* Wrapper */
+.choose-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    position: relative;
+}
+
+/* Ensure logo is above the card */
+.logo {
+    margin-bottom: -30px;
+    z-index: 10;
+}
+
+.logo img {
+    width: 220px;
+    height: auto;
+}
+
+/* Main container styling */
 .container {
-    width: 1200px;
+    width: 330px;
+    padding: 40px 25px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Logo */
-.logo {
-    position: absolute;
-    top: -180px; /* Pushed further up */
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.logo img {
-    width: 540px; /* Adjusted size */
-}
-
-/* Title Styling */
+/* Title Styling - REDUCED SIZE */
 .title {
-    font-size: 42px;
+    font-size: 16px;
     font-weight: bold;
     color: #000;
-    text-align: center;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     animation: fadeIn 1.5s ease-in-out;
-    margin-top: 80px; /* More space below logo */
+    margin-bottom: 12px;
 }
 
-/* Gradient Effect on "Unlock" and "Potential" */
+/* Gradient Effect on "Unlock", "Your" and "Potential" */
 .highlight {
     background: linear-gradient(45deg, #318ba4, #ff6b6b);
-    background-clip: text; /* Standard property */
-    -webkit-background-clip: text; /* Webkit-specific property */
-    -webkit-text-fill-color: transparent; /* Required for gradient text */
-    color: transparent; /* Fallback for browsers that don't support it */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-weight: bold;
 }
 
@@ -86,34 +99,27 @@ body {
     }
 }
 
-/* Description */
-.descriptionOne {
-    font-size: 24px;
+/* Description - FURTHER REDUCED SIZE */
+.descriptionOne, .descriptionTwo {
+    font-size: 9px;
     color: #222;
-    padding: 0 20px;
-    line-height: 1.6;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    max-width: 80%;
-    margin-top: 60px; 
+    line-height: 1.3;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+    max-width: 100%;
+    margin-bottom: 3px;
 }
 
 .descriptionTwo {
-    font-size: 24px;
-    color: #222;
-    padding: 0 20px;
-    line-height: 1.6;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    max-width: 80%;
+    margin-bottom: 10px;
 }
 
-/* Slogan */
+/* Slogan - FURTHER REDUCED SIZE */
 .slogan {
-    font-size: 16px;
-    color: #444;
+    font-size: 8px;
+    color: #555;
     font-style: italic;
-    margin-bottom: 30px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    margin-top: 10px; 
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* Button Container */
@@ -121,15 +127,16 @@ body {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%; /* Full width */
+    width: 100%;
     display: flex;
+    z-index: 100;
 }
 
 /* Button Styling */
 button {
-    width: 50%; /* Equal split */
-    padding: 30px; /* Increased height */
-    font-size: 24px;
+    width: 50%;
+    padding: 16px;
+    font-size: 16px;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -141,8 +148,8 @@ button {
 .login-button {
     background-color: rgba(255, 255, 255, 0.9);
     color: #000;
-    border-top: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+    border-top: 1px solid #eee;
+    border-right: 1px solid #eee;
 }
 
 .login-button:hover {
@@ -155,10 +162,35 @@ button {
     background-color: #318ba4;
     color: white;
     font-weight: bold;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #eee;
 }
 
 .signup-button:hover {
     background-color: #2a7c92;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Media query for smaller screens */
+@media (max-width: 360px) {
+    .container {
+        width: 90%;
+        padding: 30px 15px;
+    }
+    
+    .title {
+        font-size: 14px;
+    }
+    
+    .descriptionOne, .descriptionTwo {
+        font-size: 8px;
+    }
+    
+    .slogan {
+        font-size: 7px;
+    }
+    
+    button {
+        padding: 14px;
+        font-size: 15px;
+    }
 }
