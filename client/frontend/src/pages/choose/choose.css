@@ -8,15 +8,12 @@
     font-family: 'Nunito', sans-serif;
 }
 
-
 /* Gradient Background Animation */
 @keyframes gradientShiftBackground {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
-
 
 .logo img {
     width: 220px;
@@ -73,7 +70,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
     animation: fadeIn 1.5s ease-in-out;
-    margin-bottom: 5px;
+    margin-bottom: 20px; /* Added spacing */
 }
 
 /* Gradient Effect on "Unlock", "Your", and "Potential" */
@@ -104,7 +101,7 @@ body {
     line-height: 1.3;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
     max-width: 100%;
-    margin-bottom: 3px;
+    margin-bottom: 20px; /* Added spacing */
 }
 
 /* Slogan */
@@ -135,7 +132,6 @@ button {
     transition: all 0.3s ease;
     font-family: 'Nunito', sans-serif;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    
 }
 
 /* Login Button */
