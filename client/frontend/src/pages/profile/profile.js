@@ -76,7 +76,7 @@ const Profile = () => {
                                     className={`day ${day === selectedDay ? "active" : ""} ${getHighlightedDays().includes(day) ? "highlight" : ""}`}
                                     onClick={() => setSelectedDay(day)}
                                 >
-                                    {day}
+                                    <span className="day-number">{day}</span>
                                 </div>
                             ))}
                         </div>
@@ -92,7 +92,10 @@ const Profile = () => {
                             <span
                                 key={view}
                                 className={`tab ${activeView === view ? "active" : ""}`}
-                                onClick={() => setActiveView(view)}
+                                onClick={() => {
+                                    setActiveView(view);
+                                    setSelectedDay(1); // Ensure correct date update
+                                }}
                             >
                                 {view.charAt(0).toUpperCase() + view.slice(1)}
                             </span>
