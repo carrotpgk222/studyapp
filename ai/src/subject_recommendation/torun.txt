@@ -1,0 +1,3 @@
+cd ai\src\subject_recommendation
+python model\train_model.py
+python model\predict.py
