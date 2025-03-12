@@ -115,11 +115,18 @@ body {
 }
 
 /* Stats Section */
+/* Stats Section */
 .stats-section {
   display: flex;
   justify-content: space-between;
   width: 100%;
+  background-color: white; /* Ensure the stats section has a white background */
+  padding: 20px; /* Add padding for spacing */
+  border-radius: 10px; /* Optional: Add rounded corners for aesthetics */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
+
+/* Individual Stat Boxes */
 .stat-box {
   padding: 25px;
   text-align: center;
@@ -127,7 +134,11 @@ body {
   flex: 1;
   margin: 0 15px;
   max-width: 1000px;
+  background-color: white; /* Ensure each stat box has a white background */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  border: 1px solid #ddd; /* Optional: Light border for better separation */
 }
+
 .stat-box p {
   font-size: 16px;
   color: #666;
